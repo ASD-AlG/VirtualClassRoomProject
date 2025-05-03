@@ -1,5 +1,6 @@
 
 import java.awt.*;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.swing.*;
@@ -153,8 +154,12 @@ public class AdminDashboard extends JFrame {
         statsPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // بطاقات الإحصائيات
-        addStatCard(statsPanel, "إجمالي الطلاب", "60");
-        addStatCard(statsPanel, "إجمالي المعلمين", "10");
+        int num=dbManager.get_std_num();
+        String std = String.valueOf(num);
+        num=dbManager.get_tch_num();
+        String tch = String.valueOf(num);
+        addStatCard(statsPanel, "إجمالي الطلاب", std);
+        addStatCard(statsPanel, "إجمالي المعلمين", tch);
         addStatCard(statsPanel, "إجمالي الدورات", "15");
         addStatCard(statsPanel, "الواجبات النشطة", "25");
         addStatCard(statsPanel, "تسليمات هذا الأسبوع", "120");

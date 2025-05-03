@@ -22,8 +22,9 @@ public class LoginForm extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        new  AdminDashboard("ahmed", db);
     }
-
+    
     private void initUi() {
         JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -91,7 +92,7 @@ public class LoginForm extends JFrame {
                     break;
             }
 
-            // Open respective dashboard (not implemented in this minimal version)
+            
         } else {
             JOptionPane.showMessageDialog(this, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -99,5 +100,6 @@ public class LoginForm extends JFrame {
 
     public static void main(String[] args) {
         new LoginForm();
+        
     }
 }

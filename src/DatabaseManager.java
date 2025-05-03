@@ -71,7 +71,7 @@ public class DatabaseManager {
     }
 
     public boolean validateLogin(String email, String password, String role) {
-        
+       
         if (connection == null) return false;
 
         final String sql =
@@ -88,7 +88,42 @@ public class DatabaseManager {
             return false;
         }
     }
+    public int get_std_num(){
+        int count=0;
+        
+        final String sql =
+            "SELECT count(id) from Users, where role='Student'";
+        try (Statement stmt = connection.createStatement();ResultSet rs = stmt.executeQuery(sql);) {
+            rs.next();
+            count = rs.getInt(1);
+            return count;
+        
+        
 
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+
+    }
+    public int get_tch_num(){
+        int count=0;
+        
+        final String sql =
+            "SELECT count(id) from Users, where role='Teacher'";
+        try (Statement stmt = connection.createStatement();ResultSet rs = stmt.executeQuery(sql);) {
+            rs.next();
+            count = rs.getInt(1);
+            return count;
+        
+        
+
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+
+    }
     public int getUserId(String email) {
         if (connection == null) return -1;
 
