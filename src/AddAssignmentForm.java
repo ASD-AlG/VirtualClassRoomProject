@@ -14,7 +14,9 @@ public class AddAssignmentForm extends JFrame {
     private JComboBox<String> courseComboBox;
     private JButton submitButton;
     private DatabaseManager dbManager;
+ 
 
+    
     public AddAssignmentForm(DatabaseManager dbManager) {
         this.dbManager = dbManager;
 
