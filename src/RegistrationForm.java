@@ -17,6 +17,7 @@ public class RegistrationForm extends JFrame {
 
     private final DatabaseManager db = new DatabaseManager();
 
+    
     public RegistrationForm() {
         setTitle("Virtual Classroom – Register");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -57,6 +58,8 @@ public class RegistrationForm extends JFrame {
         });
     }
 
+    
+
     private void attemptRegistration() {
         String name = nameField.getText().trim();
         String email = emailField.getText().trim();
@@ -76,6 +79,7 @@ public class RegistrationForm extends JFrame {
         if (db.registerUser(name, email, pass, role)) {
             JOptionPane.showMessageDialog(this, "Registration successful – you may log in now", "Success", JOptionPane.INFORMATION_MESSAGE);
             dispose();
+            
         } else {
             JOptionPane.showMessageDialog(this, "Email already exists", "Error", JOptionPane.ERROR_MESSAGE);
         }

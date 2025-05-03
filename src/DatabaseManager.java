@@ -18,6 +18,7 @@ public class DatabaseManager {
 
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             createTablesIfNotExist();
+            System.out.println("connection succesful");
         } catch (SQLException ex) {          // connection‑related problems
             ex.printStackTrace();
             connection = null;
@@ -70,6 +71,7 @@ public class DatabaseManager {
     }
 
     public boolean validateLogin(String email, String password, String role) {
+        
         if (connection == null) return false;
 
         final String sql =

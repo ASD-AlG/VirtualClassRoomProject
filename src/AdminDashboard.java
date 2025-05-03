@@ -1,5 +1,7 @@
 
 import java.awt.*;
+import java.sql.ResultSet;
+
 import javax.swing.*;
 
 /**
@@ -11,6 +13,8 @@ public class AdminDashboard extends JFrame {
 
     private JTabbedPane tabbedPane;
 
+
+    
     public AdminDashboard(String username, DatabaseManager dbManager) {
         this.username = username;
         this.dbManager = dbManager;
@@ -62,8 +66,10 @@ public class AdminDashboard extends JFrame {
         panel.add(searchPanel, BorderLayout.NORTH);
 
         // قائمة المستخدمين (بيانات وهمية للعرض)
+        
         String[] columnNames = {"المعرف", "الاسم", "البريد الإلكتروني", "نوع المستخدم", "تاريخ التسجيل"};
         Object[][] data = {
+            
                 {"1", "أحمد محمد", "ahmed@example.com", "طالب", "2023-10-01"},
                 {"2", "سارة علي", "sarah@example.com", "طالب", "2023-10-05"},
                 {"3", "د. محمد", "dr.mohamed@example.com", "معلم", "2023-09-15"},
