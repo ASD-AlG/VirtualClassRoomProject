@@ -92,7 +92,7 @@ public class DatabaseManager {
         int count=0;
         
         final String sql =
-            "SELECT count(id) from Users, where role='Student'";
+            "SELECT count(user_id) from Users where role='Student'";
         try (Statement stmt = connection.createStatement();ResultSet rs = stmt.executeQuery(sql);) {
             rs.next();
             count = rs.getInt(1);
@@ -110,7 +110,7 @@ public class DatabaseManager {
         int count=0;
         
         final String sql =
-            "SELECT count(id) from Users, where role='Teacher'";
+            "SELECT count(user_id) from Users where role='Teacher'";
         try (Statement stmt = connection.createStatement();ResultSet rs = stmt.executeQuery(sql);) {
             rs.next();
             count = rs.getInt(1);
