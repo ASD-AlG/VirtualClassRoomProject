@@ -77,6 +77,9 @@ public class RegistrationForm extends JFrame {
         }
 
         if (db.registerUser(name, email, pass, role)) {
+
+            db.registerUser( name, email,pass, role);
+
             JOptionPane.showMessageDialog(this, "Registration successful – you may log in now", "Success", JOptionPane.INFORMATION_MESSAGE);
             dispose();
             
