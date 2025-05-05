@@ -16,13 +16,14 @@ public class LoginForm extends JFrame {
     private final DatabaseManager db = new DatabaseManager();
 
     public LoginForm() {
-        setTitle("Virtual Classroom – Login");
+        App.UICHANGEMETHOD();
+        setTitle("Virtual Classroom - Login");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         initUi();
-        pack();
         setLocationRelativeTo(null);
         setVisible(true);
         
+        setSize(500,250);
     }
     
     private void initUi() {

@@ -16,6 +16,7 @@ public class TeacherDashboard extends JFrame {
         this.dbManager = dbManager;
 
         // إعداد النافذة
+        App.UICHANGEMETHOD();
         setTitle("لوحة تحكم المعلم: " + username);
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

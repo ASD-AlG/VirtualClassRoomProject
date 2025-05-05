@@ -53,10 +53,19 @@ public class DatabaseManager {
         + ")";
 
 
+        final String CourseTable =
+          "CREATE TABLE IF NOT EXISTS courses ("
+          + " course_id INT PRIMARY KEY AUTO_INCREMENT,"
+          + " course_name VARCHAR(100) NOT NULL,"
+          + " enrollmentDate DATE NOT NULL,"
+            + " credit_hour INT NOT NULL"
+        + ")";
+
 
         try (Statement st = connection.createStatement()) {
             st.execute(usersTable);
             st.execute(AssignmentTable);
+            st.execute(CourseTable);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -191,6 +200,20 @@ public class DatabaseManager {
                 return null;
             }
     }
+
+    public TableModel getCoursesTable()
+    {
+        final String sql = "select * from courses";
+        try (Statement stmt = connection.createStatement();ResultSet rs = stmt.executeQuery(sql);) {
+            return DbUtils.resultSetToTableModel(rs);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+                return null;
+            }
+    }
+
+
 
     public int getUserId(String email) {
         if (connection == null) return -1;

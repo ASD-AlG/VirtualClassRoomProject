@@ -23,6 +23,7 @@ public class AdminDashboard extends JFrame {
         this.dbManager = dbManager;
 
         // إعداد النافذة
+        App.UICHANGEMETHOD();
         setTitle("لوحة تحكم المسؤول: " + username);
         setSize(900, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

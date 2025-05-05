@@ -12,8 +12,8 @@ public class StudentDashboard extends JFrame {
     public StudentDashboard(String username, DatabaseManager dbManager) {
         this.username = username;
         this.dbManager = dbManager;
-
         // إعداد النافذة
+        App.UICHANGEMETHOD();
         setTitle("Student Dashboard: " + username);
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,20 +38,14 @@ public class StudentDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("الدورات المسجلة", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Enrolled Courses", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
-        // قائمة الدورات المسجلة (بيانات وهمية للعرض)
-        String[] columnNames = {"رقم الدورة", "اسم الدورة", "المعلم", "الوصف"};
-        Object[][] data = {
-                {"101", "البرمجة بلغة جافا", "د. محمد", "مقدمة في البرمجة بلغة جافا"},
-                {"102", "قواعد البيانات", "د. أحمد", "تصميم وإدارة قواعد البيانات"},
-                {"103", "هندسة البرمجيات", "د. علي", "مبادئ تطوير البرمجيات"}
-        };
-
-        JTable table = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JTable StudentCourses = new JTable();
+        StudentCourses.setModel(dbManager.getCoursesTable());
+        StudentCourses.setDefaultEditor(Object.class, null);
+        JScrollPane scrollPane = new JScrollPane(StudentCourses);
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // زر للتسجيل في دورة جديدة
@@ -66,12 +60,13 @@ public class StudentDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("الواجبات", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Assignments", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
         // قائمة الواجبات (بيانات وهمية للعرض)
         JTable StudentAssignments = new JTable();
+        StudentAssignments.setDefaultEditor(Object.class, null);
         StudentAssignments.setModel(dbManager.getAssignmentTable());
         JScrollPane scrollPane = new JScrollPane(StudentAssignments);
         panel.add(scrollPane, BorderLayout.CENTER);
