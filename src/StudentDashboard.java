@@ -1,5 +1,8 @@
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 /**
  * This class is the student dashboard after they login
@@ -83,7 +86,7 @@ public class StudentDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("الدرجات", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Grades", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
@@ -119,8 +122,16 @@ public class StudentDashboard extends JFrame {
         panel.add(new JLabel("تاريخ التسجيل:"));
         panel.add(new JLabel("2023-11-01")); // بيانات وهمية للعرض
 
-        JButton changePasswordButton = new JButton("تغيير كلمة المرور");
-        panel.add(changePasswordButton);
+        JButton logout = new JButton("Log out");
+        logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                LoginForm newlogin = new LoginForm();
+                newlogin.setLocationRelativeTo(null);
+            }
+        });
+        panel.add(logout);
 
         return panel;
     }
