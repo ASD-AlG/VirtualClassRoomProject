@@ -22,7 +22,7 @@ public class LoginForm extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-        new  AdminDashboard("ahmed", db); //debugging temp code
+        new  StudentDashboard("ahmed", db); //debugging temp code
     }
     
     private void initUi() {

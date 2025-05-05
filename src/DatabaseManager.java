@@ -41,8 +41,19 @@ public class DatabaseManager {
           + " role     ENUM('Student','Teacher','Admin') NOT NULL"
           + ")";
 
+          final String AssignmentTable =
+          "CREATE TABLE IF NOT EXISTS Assignment ("
+          + " assignment_id INT PRIMARY KEY AUTO_INCREMENT,"
+          + " course VARCHAR(100) NOT NULL,"
+          + " submissionDate DATE NOT NULL,"
+            + " End_date DATE NOT NULL"
+        + ")";
+
+
+
         try (Statement st = connection.createStatement()) {
             st.execute(usersTable);
+            st.execute(AssignmentTable);
         } catch (SQLException e) {
             e.printStackTrace();
         }
