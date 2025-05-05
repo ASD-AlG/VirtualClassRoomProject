@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 
 import javax.swing.*;
 
+import org.w3c.dom.events.MouseEvent;
+
 /**
  * واجهة المسؤول الرئيسية
  */
@@ -95,7 +97,7 @@ public class AdminDashboard extends JFrame {
         buttonPanel.add(deleteUserButton);
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
-
+            
         return panel;
     }
 
