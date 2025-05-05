@@ -1,5 +1,6 @@
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 import net.proteanit.sql.DbUtils;
 import javax.swing.table.TableModel;
@@ -73,6 +74,41 @@ public class DatabaseManager {
             pst.setString(2, email);
             pst.setString(3, password);   // 👉 hash in production
             pst.setString(4, role);
+            pst.executeUpdate();
+            return true;
+        } catch (SQLIntegrityConstraintViolationException dup) {
+            return false;                 // duplicate email
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean insertAssignmen(String course, String submissionDate,
+                                String End_date) {
+        if (connection == null) return false;
+
+        final String sql = "INSERT INTO Assignment(course,submissionDate,End_date)"
+                         + " VALUES(?,?,?)";
+                    
+                         
+        
+
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+            java.util.Date dt = sdf.parse(submissionDate);//add catch bc i suck
+            java.sql.Date submissionDate1 = new java.sql.Date(dt.getTime());
+            
+            SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+            java.util.Date dt1 = sdf1.parse(End_date);//add catch bc i suck
+            java.sql.Date End_date1 = new java.sql.Date(dt.getTime());
+
+
+            pst.setString(1, course);
+            pst.setDate(2, submissionDate1);
+            pst.setDate(3, End_date1);
+           
             pst.executeUpdate();
             return true;
         } catch (SQLIntegrityConstraintViolationException dup) {
