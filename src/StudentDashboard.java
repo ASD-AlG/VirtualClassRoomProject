@@ -1,7 +1,7 @@
 
 import java.awt.*;
 import javax.swing.*;
-
+import net.proteanit.sql.DbUtils;;
 /**
  * This class is the student dashboard after they login
  */
@@ -79,8 +79,10 @@ public class StudentDashboard extends JFrame {
                 {"203", "هندسة البرمجيات", "واجب #1: متطلبات المشروع", "2023-12-25", "لم يبدأ بعد"}
         };
 
-        JTable table = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JTable StudentAssignments = new JTable();
+        DatabaseManager dbweirdo = new DatabaseManager();
+        StudentAssignments.setModel(dbManager.getAssignmentTable());
+        JScrollPane scrollPane = new JScrollPane(StudentAssignments);
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // زر لتسليم واجب

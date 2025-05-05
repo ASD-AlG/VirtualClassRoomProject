@@ -1,6 +1,8 @@
 
 import java.sql.*;
 
+import net.proteanit.sql.DbUtils;
+import javax.swing.table.TableModel;
 public class DatabaseManager {
 
     private static final String DB_URL      =
@@ -135,6 +137,19 @@ public class DatabaseManager {
         }
 
     }
+
+    public TableModel getAssignmentTable()
+    {
+        final String sql = "select * from assignment";
+        try (Statement stmt = connection.createStatement();ResultSet rs = stmt.executeQuery(sql);) {
+            return DbUtils.resultSetToTableModel(rs);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+                return null;
+            }
+    }
+
     public int getUserId(String email) {
         if (connection == null) return -1;
 
@@ -149,6 +164,9 @@ public class DatabaseManager {
             return -1;
         }
     }
+
+
+
 
     public void close() {
         try { if (connection != null) connection.close(); }
