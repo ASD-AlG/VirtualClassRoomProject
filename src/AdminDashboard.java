@@ -1,5 +1,7 @@
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -24,7 +26,7 @@ public class AdminDashboard extends JFrame {
 
         // إعداد النافذة
         App.UICHANGEMETHOD();
-        setTitle("لوحة تحكم المسؤول: " + username);
+        setTitle("Admin -" + username);
         setSize(900, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -224,6 +226,17 @@ public class AdminDashboard extends JFrame {
         settingsPanel.add(emailAlertsCheckBox);
 
         JButton saveSettingsButton = new JButton("حفظ الإعدادات");
+        JButton logout = new JButton("Log out");
+        logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                LoginForm newlogin = new LoginForm();
+                newlogin.setLocationRelativeTo(null);
+            }
+        });
+        
+        settingsPanel.add(logout);
         settingsPanel.add(saveSettingsButton);
 
         panel.add(settingsPanel, BorderLayout.CENTER);

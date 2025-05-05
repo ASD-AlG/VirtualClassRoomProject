@@ -99,8 +99,5 @@ public class LoginForm extends JFrame {
         }
     }
 
-    public static void RevealLoginForm()
-    {
-    }
 
 }
