@@ -97,12 +97,18 @@ public class DatabaseManager {
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
 
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-            java.util.Date dt = sdf.parse(submissionDate);//add catch bc i suck
-            java.sql.Date submissionDate1 = new java.sql.Date(dt.getTime());
-            
-            SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-            java.util.Date dt1 = sdf1.parse(End_date);//add catch bc i suck
-            java.sql.Date End_date1 = new java.sql.Date(dt.getTime());
+            try {
+                java.util.Date dt = sdf.parse(submissionDate);//add catch bc i suck
+                java.sql.Date submissionDate1 = new java.sql.Date(dt.getTime());
+                
+                SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+                java.util.Date dt1 = sdf1.parse(End_date);//add catch bc i suck
+                java.sql.Date End_date1 = new java.sql.Date(dt.getTime());
+                
+            } catch (Exception e) {
+                System.err.println("Parse Exception Thrown");
+                e.printStackTrace();
+            }
 
 
             pst.setString(1, course);

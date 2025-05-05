@@ -1,7 +1,6 @@
 
 import java.awt.*;
 import javax.swing.*;
-import net.proteanit.sql.DbUtils;;
 /**
  * This class is the student dashboard after they login
  */
@@ -15,20 +14,20 @@ public class StudentDashboard extends JFrame {
         this.dbManager = dbManager;
 
         // إعداد النافذة
-        setTitle("لوحة تحكم الطالب: " + username);
+        setTitle("Student Dashboard: " + username);
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // إنشاء لوحة التبويب
         tabbedPane = new JTabbedPane();
-        tabbedPane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        tabbedPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
         // إضافة علامات التبويب
-        tabbedPane.addTab("الدورات المسجلة", createCoursesPanel());
-        tabbedPane.addTab("الواجبات", createAssignmentsPanel());
-        tabbedPane.addTab("الدرجات", createGradesPanel());
-        tabbedPane.addTab("الملف الشخصي", createProfilePanel());
+        tabbedPane.addTab("Enrolled Courses ", createCoursesPanel());
+        tabbedPane.addTab("Assignments", createAssignmentsPanel());
+        tabbedPane.addTab("Grades", createGradesPanel());
+        tabbedPane.addTab("Personal Profile", createProfilePanel());
 
         add(tabbedPane);
         setVisible(true);
@@ -72,15 +71,7 @@ public class StudentDashboard extends JFrame {
         panel.add(titleLabel, BorderLayout.NORTH);
 
         // قائمة الواجبات (بيانات وهمية للعرض)
-        String[] columnNames = {"رقم الواجب", "الدورة", "العنوان", "الموعد النهائي", "الحالة"};
-        Object[][] data = {
-                {"201", "البرمجة بلغة جافا", "واجب #1: برمجة آلة حاسبة", "2023-12-15", "تم التسليم"},
-                {"202", "قواعد البيانات", "واجب #1: تصميم قاعدة بيانات", "2023-12-20", "قيد التنفيذ"},
-                {"203", "هندسة البرمجيات", "واجب #1: متطلبات المشروع", "2023-12-25", "لم يبدأ بعد"}
-        };
-
         JTable StudentAssignments = new JTable();
-        DatabaseManager dbweirdo = new DatabaseManager();
         StudentAssignments.setModel(dbManager.getAssignmentTable());
         JScrollPane scrollPane = new JScrollPane(StudentAssignments);
         panel.add(scrollPane, BorderLayout.CENTER);
