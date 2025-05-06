@@ -22,7 +22,7 @@ public class TeacherDashboard extends JFrame {
 
         // إعداد النافذة
         App.UICHANGEMETHOD();
-        setTitle("لوحة تحكم المعلم: " + username);
+        setTitle("Teacher Dashboard: " + username);
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -34,8 +34,8 @@ public class TeacherDashboard extends JFrame {
         // إضافة علامات التبويب
         tabbedPane.addTab("Courses", createCoursesPanel());
         tabbedPane.addTab("Announcements", createAssignmentsPanel());
-        tabbedPane.addTab("تقييم الطلاب", createGradingPanel());
-        tabbedPane.addTab("التقارير", createReportsPanel());
+        tabbedPane.addTab("Student grades", createGradingPanel());
+        tabbedPane.addTab("Reports", createReportsPanel());
 
         add(tabbedPane);
         setVisible(true);
@@ -46,7 +46,7 @@ public class TeacherDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("الدورات الخاصة بك", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("your courses", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
@@ -273,16 +273,16 @@ public class TeacherDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("تقييم الطلاب", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Student grades", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
         // قائمة التسليمات للتقييم (بيانات وهمية للعرض)
-        String[] columnNames = {"الطالب", "الدورة", "الواجب", "تاريخ التسليم", "الدرجة"};
+        String[] columnNames = {"Student", "Course", "Assignment", "Submission Date", "Grade"};
         Object[][] data = {
-                {"أحمد محمد", "البرمجة بلغة جافا", "واجب #1", "2023-12-10", "لم يتم التقييم"},
-                {"سارة علي", "البرمجة بلغة جافا", "واجب #1", "2023-12-11", "90/100"},
-                {"خالد أحمد", "قواعد البيانات", "واجب #1", "2023-12-12", "لم يتم التقييم"}
+                {"ahmed", "object oriented programing", "Q1", "6/5/2025", "10/10"},
+                {"ahmed", "object oriented programing", "Q2", "6/5/2025", "10/10"},
+                {"ahmed", "object oriented programing", "Q3", "6/5/2025", "10/10"}
         };
 
         JTable table = new JTable(data, columnNames);
@@ -290,7 +290,7 @@ public class TeacherDashboard extends JFrame {
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // أزرار للتحكم
-        JButton gradeButton = new JButton("وضع درجة للتسليم المحدد");
+        JButton gradeButton = new JButton("Grade assignment");
         panel.add(gradeButton, BorderLayout.SOUTH);
 
         return panel;
@@ -301,7 +301,7 @@ public class TeacherDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("التقارير والإحصائيات", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Reports", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
@@ -310,10 +310,10 @@ public class TeacherDashboard extends JFrame {
         reportsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         reportsPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        JButton courseStatisticsButton = new JButton("إحصائيات الدورات");
-        JButton studentPerformanceButton = new JButton("أداء الطلاب");
-        JButton assignmentStatisticsButton = new JButton("إحصائيات الواجبات");
-        JButton exportReportButton = new JButton("تصدير التقارير إلى PDF");
+        JButton courseStatisticsButton = new JButton("courses");
+        JButton studentPerformanceButton = new JButton("Student performance");
+        JButton assignmentStatisticsButton = new JButton("Assignments");
+        JButton exportReportButton = new JButton("Print report as PDF");
 
         reportsPanel.add(courseStatisticsButton);
         reportsPanel.add(studentPerformanceButton);
