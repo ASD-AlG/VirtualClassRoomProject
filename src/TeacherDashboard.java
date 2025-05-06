@@ -33,7 +33,7 @@ public class TeacherDashboard extends JFrame {
 
         // إضافة علامات التبويب
         tabbedPane.addTab("Courses", createCoursesPanel());
-        tabbedPane.addTab("الواجبات", createAssignmentsPanel());
+        tabbedPane.addTab("Announcements", createAssignmentsPanel());
         tabbedPane.addTab("تقييم الطلاب", createGradingPanel());
         tabbedPane.addTab("التقارير", createReportsPanel());
 
@@ -151,7 +151,7 @@ public class TeacherDashboard extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        JButton addAssignmentButton = new JButton("");
+        JButton addAssignmentButton = new JButton("New Announcement");
         addAssignmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
