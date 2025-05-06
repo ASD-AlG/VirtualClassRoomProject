@@ -1,8 +1,9 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * Registration window for new users (Student or Teacher).
@@ -58,7 +59,12 @@ public class RegistrationForm extends JFrame {
         });
     }
 
-    
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[^@]+@[^@]+\\.com$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     private void attemptRegistration() {
         String name = nameField.getText().trim();
@@ -71,15 +77,19 @@ public class RegistrationForm extends JFrame {
             JOptionPane.showMessageDialog(this, "All fields are required", "Missing input", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        if (!isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Invalid email format. Email must be in the format: name@domain.com", 
+                                        "Invalid Email", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         if (!pass.equals(confirm)) {
             JOptionPane.showMessageDialog(this, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (db.registerUser(name, email, pass, role)) {
-
-            db.registerUser( name, email,pass, role);
-
             JOptionPane.showMessageDialog(this, "Registration successful – you may log in now", "Success", JOptionPane.INFORMATION_MESSAGE);
             dispose();
             
