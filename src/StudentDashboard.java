@@ -9,12 +9,14 @@ import javax.swing.*;
  */
 public class StudentDashboard extends JFrame {
     private String username;
+    private String email;
     private DatabaseManager dbManager;
     private JTabbedPane tabbedPane;
 
-    public StudentDashboard(String username, DatabaseManager dbManager) {
+    public StudentDashboard(String username,String email, DatabaseManager dbManager) {
         this.username = username;
         this.dbManager = dbManager;
+        this.email = email;
         // إعداد النافذة
         App.UICHANGEMETHOD();
         setTitle("Student Dashboard: " + username);
@@ -90,16 +92,13 @@ public class StudentDashboard extends JFrame {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
-        // قائمة الدرجات (بيانات وهمية للعرض)
-        String[] columnNames = {"الدورة", "الواجب", "الدرجة", "ملاحظات"};
-        Object[][] data = {
-                {"البرمجة بلغة جافا", "واجب #1", "90/100", "عمل ممتاز!"},
-                {"قواعد البيانات", "واجب #1", "لم يتم التقييم بعد", ""},
-                {"هندسة البرمجيات", "واجب #1", "لم يتم التسليم", ""}
-        };
 
-        JTable table = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
+
+        JTable gradestable = new JTable();
+        gradestable.setModel(dbManager.getGradesTable());
+        gradestable.setDefaultEditor(Object.class, null);
+
+        JScrollPane scrollPane = new JScrollPane(gradestable);
         panel.add(scrollPane, BorderLayout.CENTER);
 
         return panel;
@@ -111,10 +110,10 @@ public class StudentDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         panel.add(new JLabel("اسم المستخدم:"));
-        panel.add(new JLabel(username));
+        panel.add(new JLabel(dbManager.getName(email)));
 
         panel.add(new JLabel("البريد الإلكتروني:"));
-        panel.add(new JLabel(username + "@example.com")); // بيانات وهمية للعرض
+        panel.add(new JLabel(email)); // بيانات وهمية للعرض
 
         panel.add(new JLabel("نوع المستخدم:"));
         panel.add(new JLabel("طالب"));

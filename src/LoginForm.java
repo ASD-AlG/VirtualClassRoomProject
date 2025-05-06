@@ -77,15 +77,15 @@ public class LoginForm extends JFrame {
             JOptionPane.showMessageDialog(this, "Login successful", "Welcome " + role, JOptionPane.INFORMATION_MESSAGE);
             switch (role) {
                 case "Student":
-                    new StudentDashboard(role, db);
+                    new StudentDashboard(role,email, db);
                     setVisible(false);
                     break;
                 case "Teacher":
-                    new TeacherDashboard(role, db);
+                    new TeacherDashboard(role,email, db);
                     setVisible(false);
                     break;
                 case "Admin":
-                    new AdminDashboard(role, db);
+                    new AdminDashboard(role,email, db);
                     setVisible(false);
                     break;
                 default:

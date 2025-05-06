@@ -7,12 +7,14 @@ import javax.swing.*;
  */
 public class TeacherDashboard extends JFrame {
     private String username;
+    private String email;
     private DatabaseManager dbManager;
 
     private JTabbedPane tabbedPane;
 
-    public TeacherDashboard(String username, DatabaseManager dbManager) {
+    public TeacherDashboard(String username,String email, DatabaseManager dbManager) {
         this.username = username;
+        this.email = email;
         this.dbManager = dbManager;
 
         // إعداد النافذة
@@ -53,8 +55,10 @@ public class TeacherDashboard extends JFrame {
                 {"103", "هندسة البرمجيات", "15", "مبادئ تطوير البرمجيات"}
         };
 
-        JTable table = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JTable courseTable = new JTable();
+        courseTable.setDefaultEditor(Object.class, null);
+        courseTable.setModel(dbManager.getCoursesTable());
+        JScrollPane scrollPane = new JScrollPane(courseTable);
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // أزرار للتحكم

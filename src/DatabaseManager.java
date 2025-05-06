@@ -62,10 +62,19 @@ public class DatabaseManager {
         + ")";
 
 
+        final String GradesTable =
+        "CREATE TABLE IF NOT EXISTS grades ("
+        + " course_id INT PRIMARY KEY AUTO_INCREMENT,"
+        + " course_name VARCHAR(100) NOT NULL,"
+        + " grade INT NOT NULL,"
+          + " Note VARCHAR(100) NOT NULL"
+      + ")";
+
         try (Statement st = connection.createStatement()) {
             st.execute(usersTable);
             st.execute(AssignmentTable);
             st.execute(CourseTable);
+            st.execute(GradesTable);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -213,7 +222,42 @@ public class DatabaseManager {
             }
     }
 
+    public TableModel getGradesTable()
+    {
+        final String sql = "select * from grades";
+        try (Statement stmt = connection.createStatement();ResultSet rs = stmt.executeQuery(sql);) {
+            return DbUtils.resultSetToTableModel(rs);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+                return null;
+            }
+    }
 
+
+    public String getName(String email) {
+        final String sql = "SELECT name FROM users WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            // 1) bind the email parameter
+            stmt.setString(1, email);
+    
+            // 2) execute the query
+            try (ResultSet rs = stmt.executeQuery()) {
+                // 3) move to the first row (if any) and pull out "name"
+                if (rs.next()) {
+                    return rs.getString("name");
+                } else {
+                    // no matching user
+                    return null;
+                }
+            }
+        } catch (SQLException ex) {
+            // log or rethrow as you see fit
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
 
     public int getUserId(String email) {
         if (connection == null) return -1;

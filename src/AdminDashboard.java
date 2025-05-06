@@ -14,16 +14,17 @@ import org.w3c.dom.events.MouseEvent;
  */
 public class AdminDashboard extends JFrame {
     private String username;
+    private String email;
     private DatabaseManager dbManager;
 
     private JTabbedPane tabbedPane;
 
 
     
-    public AdminDashboard(String username, DatabaseManager dbManager) {
+    public AdminDashboard(String username,String email, DatabaseManager dbManager) {
         this.username = username;
         this.dbManager = dbManager;
-
+        this.email = email;
         // إعداد النافذة
         App.UICHANGEMETHOD();
         setTitle("Admin -" + username);
@@ -170,7 +171,7 @@ public class AdminDashboard extends JFrame {
         addStatCard(statsPanel, "تسليمات هذا الأسبوع", "120");
 
         // زر تصدير التقارير
-        JButton exportReportButton = new JButton("تصدير التقارير");
+        JButton exportReportButton = new JButton("Export user information");
         JPanel exportPanel = new JPanel(new BorderLayout());
         exportPanel.add(exportReportButton, BorderLayout.CENTER);
         statsPanel.add(exportPanel);
@@ -205,27 +206,12 @@ public class AdminDashboard extends JFrame {
 
         // لوحة الإعدادات
         JPanel settingsPanel = new JPanel(new GridLayout(6, 2, 10, 20));
-        settingsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        settingsPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        settingsPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
-        settingsPanel.add(new JLabel("اسم النظام:"));
-        settingsPanel.add(new JTextField("نظام إدارة الفصول الافتراضية"));
+        settingsPanel.add(new JLabel("Username:"));
+        settingsPanel.add(new JLabel(dbManager.getName(email)));
 
-        settingsPanel.add(new JLabel("البريد الإلكتروني للنظام:"));
-        settingsPanel.add(new JTextField("system@example.com"));
 
-        settingsPanel.add(new JLabel("الحد الأقصى لحجم الملفات (MB):"));
-        settingsPanel.add(new JTextField("20"));
-
-        settingsPanel.add(new JLabel("عدد المحاولات المسموح بها لتسجيل الدخول:"));
-        settingsPanel.add(new JTextField("3"));
-
-        settingsPanel.add(new JLabel("التنبيهات عبر البريد الإلكتروني:"));
-        JCheckBox emailAlertsCheckBox = new JCheckBox("تفعيل");
-        emailAlertsCheckBox.setSelected(true);
-        settingsPanel.add(emailAlertsCheckBox);
-
-        JButton saveSettingsButton = new JButton("حفظ الإعدادات");
         JButton logout = new JButton("Log out");
         logout.addActionListener(new ActionListener() {
             @Override
@@ -237,7 +223,6 @@ public class AdminDashboard extends JFrame {
         });
         
         settingsPanel.add(logout);
-        settingsPanel.add(saveSettingsButton);
 
         panel.add(settingsPanel, BorderLayout.CENTER);
 
