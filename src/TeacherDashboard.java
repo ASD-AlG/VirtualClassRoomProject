@@ -32,7 +32,7 @@ public class TeacherDashboard extends JFrame {
         tabbedPane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // إضافة علامات التبويب
-        tabbedPane.addTab("الدورات", createCoursesPanel());
+        tabbedPane.addTab("Courses", createCoursesPanel());
         tabbedPane.addTab("الواجبات", createAssignmentsPanel());
         tabbedPane.addTab("تقييم الطلاب", createGradingPanel());
         tabbedPane.addTab("التقارير", createReportsPanel());
@@ -130,10 +130,8 @@ public class TeacherDashboard extends JFrame {
                 addCourseDialog.setVisible(true);
             }
         });
-        JButton manageCourseButton = new JButton("إدارة الدورة المحددة");
 
         buttonPanel.add(addCourseButton);
-        buttonPanel.add(manageCourseButton);
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -145,9 +143,7 @@ public class TeacherDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("إدارة الواجبات", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        panel.add(titleLabel, BorderLayout.NORTH);
+
 
         // قائمة الواجبات (بيانات وهمية للعرض)
         String[] columnNames = {"رقم الواجب", "الدورة", "العنوان", "الموعد النهائي", "عدد التسليمات"};
@@ -157,21 +153,20 @@ public class TeacherDashboard extends JFrame {
                 {"203", "هندسة البرمجيات", "واجب #1: متطلبات المشروع", "2023-12-25", "5/15"}
         };
 
-        JTable table = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JTable asstable = new JTable();
+        asstable.setDefaultEditor(Object.class, null);
+        asstable.setModel(dbManager.getAssignmentTable());
+        JScrollPane scrollPane = new JScrollPane(asstable);
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // أزرار للتحكم
         JPanel buttonPanel = new JPanel();
         buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        JButton addAssignmentButton = new JButton("إضافة واجب جديد");
-        JButton editAssignmentButton = new JButton("تعديل الواجب المحدد");
-        JButton viewSubmissionsButton = new JButton("عرض التسليمات");
+        JButton addAssignmentButton = new JButton("Add Assignment");
 
         buttonPanel.add(addAssignmentButton);
-        buttonPanel.add(editAssignmentButton);
-        buttonPanel.add(viewSubmissionsButton);
+
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
