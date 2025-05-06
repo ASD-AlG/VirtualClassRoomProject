@@ -40,10 +40,10 @@ public class AdminDashboard extends JFrame {
         tabbedPane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // إضافة علامات التبويب
-        tabbedPane.addTab("إدارة المستخدمين", createUsersPanel());
-        tabbedPane.addTab("إدارة الدورات", createCoursesPanel());
-        tabbedPane.addTab("لوحة المعلومات", createDashboardPanel());
-        tabbedPane.addTab("إعدادات النظام", createSettingsPanel());
+        tabbedPane.addTab("Users List", createUsersPanel());
+        tabbedPane.addTab("courses List", createCoursesPanel());
+        tabbedPane.addTab("System Information", createDashboardPanel());
+        tabbedPane.addTab("Admin Information ", createSettingsPanel());
 
         add(tabbedPane);
         setVisible(true);
@@ -54,7 +54,7 @@ public class AdminDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("إدارة المستخدمين", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Users List", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
@@ -62,15 +62,15 @@ public class AdminDashboard extends JFrame {
         JPanel searchPanel = new JPanel();
         searchPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        searchPanel.add(new JLabel("البحث:"));
+        searchPanel.add(new JLabel("Search:"));
         JTextField searchField = new JTextField(20);
         searchPanel.add(searchField);
 
-        JComboBox<String> roleFilter = new JComboBox<>(new String[]{"الكل", "طالب", "معلم", "مسؤول"});
-        searchPanel.add(new JLabel("الفئة:"));
+        JComboBox<String> roleFilter = new JComboBox<>(new String[]{"All", "Students", "Teachers", "Admins"});
+        searchPanel.add(new JLabel("role:"));
         searchPanel.add(roleFilter);
 
-        JButton searchButton = new JButton("بحث");
+        JButton searchButton = new JButton("Search");
         searchPanel.add(searchButton);
 
         panel.add(searchPanel, BorderLayout.NORTH);
@@ -169,7 +169,7 @@ public class AdminDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("إدارة الدورات", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("courses List", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
@@ -295,7 +295,7 @@ public class AdminDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("لوحة المعلومات", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("System Information", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
@@ -306,16 +306,15 @@ public class AdminDashboard extends JFrame {
 
         // بطاقات الإحصائيات
         int num=dbManager.get_std_num();
-        int coursenum = dbManager.get_course_num();
-        String coursenumString = coursenum + "";
         String std = String.valueOf(num);
         num=dbManager.get_tch_num();
         String tch = String.valueOf(num);
-        addStatCard(statsPanel, "إجمالي الطلاب", std);
-        addStatCard(statsPanel, "إجمالي المعلمين", tch);
-        addStatCard(statsPanel, "Number of courses",coursenumString);
-        addStatCard(statsPanel, "الواجبات النشطة", "25");
-        addStatCard(statsPanel, "تسليمات هذا الأسبوع", "120");
+        num = dbManager.get_course_num();
+        String crs = String.valueOf(num);
+        addStatCard(statsPanel, " Number of Students", std);
+        addStatCard(statsPanel, "Number of Teachers", tch);
+        addStatCard(statsPanel, "Number of courses",crs);
+
 
         // زر تصدير التقارير
         JButton exportReportButton = new JButton("Export user information");
@@ -354,7 +353,7 @@ public class AdminDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("إعدادات النظام", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Admin Information", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
