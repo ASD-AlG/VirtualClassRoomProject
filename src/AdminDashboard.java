@@ -74,31 +74,35 @@ public class AdminDashboard extends JFrame {
 
         // قائمة المستخدمين (بيانات وهمية للعرض)
         
-        String[] columnNames = {"المعرف", "الاسم", "البريد الإلكتروني", "نوع المستخدم", "تاريخ التسجيل"};
-        Object[][] data = {
-            
-                {"1", "أحمد محمد", "ahmed@example.com", "طالب", "2023-10-01"},
-                {"2", "سارة علي", "sarah@example.com", "طالب", "2023-10-05"},
-                {"3", "د. محمد", "dr.mohamed@example.com", "معلم", "2023-09-15"},
-                {"4", "د. أحمد", "dr.ahmed@example.com", "معلم", "2023-09-20"},
-                {"5", "Admin", "admin@example.com", "مسؤول", "2023-09-01"}
-        };
 
-        JTable table = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
+
+        JTable userTable = new JTable();
+        userTable.setDefaultEditor(Object.class, null);
+        userTable.setModel(dbManager.getUsersTable());
+        JScrollPane scrollPane = new JScrollPane(userTable);
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // أزرار للتحكم
         JPanel buttonPanel = new JPanel();
         buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        JButton addUserButton = new JButton("إضافة مستخدم");
-        JButton editUserButton = new JButton("تعديل المستخدم المحدد");
-        JButton deleteUserButton = new JButton("حذف المستخدم المحدد");
+JButton addUserButton = new JButton("Add User");
+        addUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RegistrationForm n = new RegistrationForm();
+                n.setTitle("Add User");
+            }
+        });
+
+
+        JButton deleteUserButton = new JButton("Delete User");
 
         buttonPanel.add(addUserButton);
-        buttonPanel.add(editUserButton);
         buttonPanel.add(deleteUserButton);
+
+
+
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
             
@@ -114,31 +118,22 @@ public class AdminDashboard extends JFrame {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
-        // قائمة الدورات (بيانات وهمية للعرض)
-        String[] columnNames = {"رقم الدورة", "اسم الدورة", "المعلم", "عدد الطلاب", "تاريخ الإنشاء"};
-        Object[][] data = {
-                {"101", "البرمجة بلغة جافا", "د. محمد", "25", "2023-10-01"},
-                {"102", "قواعد البيانات", "د. أحمد", "20", "2023-10-05"},
-                {"103", "هندسة البرمجيات", "د. علي", "15", "2023-10-10"}
-        };
 
-        JTable table = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JTable courseTable = new JTable();
+        courseTable.setDefaultEditor(Object.class, null);
+        courseTable.setModel(dbManager.getCoursesTable());
+        JScrollPane scrollPane = new JScrollPane(courseTable);
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // أزرار للتحكم
         JPanel buttonPanel = new JPanel();
         buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        JButton addCourseButton = new JButton("إضافة دورة");
-        JButton editCourseButton = new JButton("تعديل الدورة المحددة");
-        JButton deleteCourseButton = new JButton("حذف الدورة المحددة");
-        JButton enrollStudentsButton = new JButton("تسجيل الطلاب");
+        JButton addCourseButton = new JButton("Add Course");
+        JButton deleteCourseButton = new JButton("Delete Course");
 
         buttonPanel.add(addCourseButton);
-        buttonPanel.add(editCourseButton);
         buttonPanel.add(deleteCourseButton);
-        buttonPanel.add(enrollStudentsButton);
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
 

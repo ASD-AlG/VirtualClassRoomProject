@@ -126,8 +126,7 @@ public class DatabaseManager {
                 System.err.println("Parse Exception Thrown");
                 e.printStackTrace();
             }
-
-
+            
             pst.setString(1, course);
             pst.setDate(2, submissionDate1);
             pst.setDate(3, End_date1);
@@ -233,6 +232,17 @@ public class DatabaseManager {
             }
     }
 
+    public TableModel getUsersTable()
+    {
+        final String sql = "select * from users";
+        try (Statement stmt = connection.createStatement();ResultSet rs = stmt.executeQuery(sql);) {
+            return DbUtils.resultSetToTableModel(rs);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+                return null;
+            }
+    }
 
     public String getName(String email) {
         final String sql = "SELECT name FROM users WHERE email = ?";
