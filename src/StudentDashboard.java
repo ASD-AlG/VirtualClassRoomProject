@@ -54,8 +54,6 @@ public class StudentDashboard extends JFrame {
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // زر للتسجيل في دورة جديدة
-        JButton registerCourseButton = new JButton("التسجيل في دورة جديدة");
-        panel.add(registerCourseButton, BorderLayout.SOUTH);
 
         return panel;
     }
@@ -109,17 +107,14 @@ public class StudentDashboard extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        panel.add(new JLabel("اسم المستخدم:"));
+        panel.add(new JLabel("Username"));
         panel.add(new JLabel(dbManager.getName(email)));
 
-        panel.add(new JLabel("البريد الإلكتروني:"));
-        panel.add(new JLabel(email)); // بيانات وهمية للعرض
+        panel.add(new JLabel("Email:"));
+        panel.add(new JLabel(email));
 
-        panel.add(new JLabel("نوع المستخدم:"));
-        panel.add(new JLabel("طالب"));
-
-        panel.add(new JLabel("تاريخ التسجيل:"));
-        panel.add(new JLabel("2023-11-01")); // بيانات وهمية للعرض
+        panel.add(new JLabel("Role:"));
+        panel.add(new JLabel("Student"));
 
         JButton logout = new JButton("Log out");
         logout.addActionListener(new ActionListener() {

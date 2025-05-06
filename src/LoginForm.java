@@ -20,10 +20,9 @@ public class LoginForm extends JFrame {
         setTitle("Virtual Classroom - Login");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         initUi();
-        setLocationRelativeTo(null);
         setVisible(true);
-        
         setSize(500,250);
+        setLocationRelativeTo(null);
     }
     
     private void initUi() {

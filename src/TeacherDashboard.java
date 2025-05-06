@@ -62,7 +62,7 @@ public class TeacherDashboard extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        JButton addCourseButton = new JButton("إضافة دورة جديدة");
+        JButton addCourseButton = new JButton("Add Course");
         addCourseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
