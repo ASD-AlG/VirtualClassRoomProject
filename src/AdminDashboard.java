@@ -1,9 +1,9 @@
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 
 import javax.swing.*;
 
@@ -172,6 +172,13 @@ public class AdminDashboard extends JFrame {
 
         // زر تصدير التقارير
         JButton exportReportButton = new JButton("Export user information");
+        exportReportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportUsersToFile();
+            }
+        });
+        
         JPanel exportPanel = new JPanel(new BorderLayout());
         exportPanel.add(exportReportButton, BorderLayout.CENTER);
         statsPanel.add(exportPanel);
@@ -227,5 +234,66 @@ public class AdminDashboard extends JFrame {
         panel.add(settingsPanel, BorderLayout.CENTER);
 
         return panel;
+    }
+    
+    // Added method to export users to a text file
+    private void exportUsersToFile() {
+        try {
+            // Get all users from database
+            ResultSet rs = dbManager.getAllUsers();
+            if (rs == null) {
+                JOptionPane.showMessageDialog(this, "Failed to retrieve user data", "Export Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Create file chooser for save location
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save Users Data");
+            fileChooser.setSelectedFile(new java.io.File("users_data.txt"));
+            
+            if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                java.io.File file = fileChooser.getSelectedFile();
+                
+                // Create a FileWriter
+                java.io.FileWriter writer = new java.io.FileWriter(file);
+                
+                // Get column metadata
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                
+                // Format column headers
+                StringBuilder header = new StringBuilder();
+                for (int i = 1; i <= columnCount; i++) {
+                    header.append(String.format("%-20s", metaData.getColumnName(i)));
+                }
+                writer.write(header.toString() + "\n");
+                
+                // Format separator line
+                StringBuilder separator = new StringBuilder();
+                for (int i = 1; i <= columnCount; i++) {
+                    separator.append(String.format("%-20s", "--------------------"));
+                }
+                writer.write(separator.toString() + "\n");
+                
+                // Format each row of data
+                while (rs.next()) {
+                    StringBuilder row = new StringBuilder();
+                    for (int i = 1; i <= columnCount; i++) {
+                        row.append(String.format("%-20s", rs.getString(i)));
+                    }
+                    writer.write(row.toString() + "\n");
+                }
+                
+                writer.close();
+                rs.close();
+                
+                JOptionPane.showMessageDialog(this, "User data exported successfully to: " + file.getAbsolutePath(), 
+                                             "Export Successful", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error exporting user data: " + ex.getMessage(), 
+                                         "Export Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

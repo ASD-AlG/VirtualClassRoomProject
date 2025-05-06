@@ -1,4 +1,3 @@
-
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
@@ -274,8 +273,19 @@ public class DatabaseManager {
         }
     }
 
-
-
+    // Added method to get all users
+    public ResultSet getAllUsers() {
+        if (connection == null) return null;
+        
+        final String sql = "SELECT user_id, name, email, role FROM Users";
+        try {
+            Statement stmt = connection.createStatement();
+            return stmt.executeQuery(sql);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
     public void close() {
         try { if (connection != null) connection.close(); }
