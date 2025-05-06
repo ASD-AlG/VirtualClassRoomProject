@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -10,6 +9,7 @@ import java.awt.event.*;
 public class AddAssignmentForm extends JFrame {
     private JTextField titleField;
     private JTextArea descriptionArea;
+    private JTextField  startdatearea;
     private JTextField deadlineField;
     private JComboBox<String> courseComboBox;
     private JButton submitButton;
@@ -49,10 +49,14 @@ public class AddAssignmentForm extends JFrame {
         titleField = new JTextField();
         formPanel.add(titleField);
 
-        formPanel.add(new JLabel("Description:"));
+        formPanel.add(new JLabel("question:"));
         descriptionArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(descriptionArea);
         formPanel.add(scrollPane);
+
+        formPanel.add(new JLabel("start date line (YYYY-MM-DD):"));
+        startdatearea = new JTextField();
+        formPanel.add(startdatearea);
 
         formPanel.add(new JLabel("Deadline (YYYY-MM-DD):"));
         deadlineField = new JTextField();
@@ -81,6 +85,7 @@ public class AddAssignmentForm extends JFrame {
     private void addAssignment() {
         String title = titleField.getText();
         String description = descriptionArea.getText();
+        String startdate=startdatearea.getText();
         String deadline = deadlineField.getText();
         String course = (String) courseComboBox.getSelectedItem();
 
@@ -90,7 +95,7 @@ public class AddAssignmentForm extends JFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        dbManager.insertAssignment(title,startdate,deadline,description);
         // Success message - in a real app, this would save to the database
         JOptionPane.showMessageDialog(this, "Assignment created!\n" +
                         "Course: " + course + "\n" +

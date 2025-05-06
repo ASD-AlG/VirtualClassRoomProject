@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -90,6 +92,36 @@ public class AdminDashboard extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 RegistrationForm n = new RegistrationForm();
                 n.setTitle("Add User");
+                n.addWindowListener(new WindowListener() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        userTable.setModel(dbManager.getUsersTable());
+                    }
+                    @Override
+                    public void windowActivated(WindowEvent e) {
+                        
+                    }
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        
+                    }
+                    @Override
+                    public void windowDeactivated(WindowEvent e) {
+                        
+                    }
+                    @Override
+                    public void windowDeiconified(WindowEvent e) {
+                        
+                    }
+                    @Override
+                    public void windowIconified(WindowEvent e) {
+                        
+                    }
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+                        
+                    }
+                });
             }
         });
 

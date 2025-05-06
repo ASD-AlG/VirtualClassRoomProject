@@ -101,7 +101,7 @@ public class DatabaseManager {
         }
     }
 
-    public boolean insertAssignmen(String course, String submissionDate,
+    public boolean insertAssignment(String course, String submissionDate,
     String End_date,String question) {
 if (connection == null) return false;
 
