@@ -47,13 +47,7 @@ public class TeacherDashboard extends JFrame {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
-        // قائمة الدورات (بيانات وهمية للعرض)
-        String[] columnNames = {"رقم الدورة", "اسم الدورة", "عدد الطلاب", "الوصف"};
-        Object[][] data = {
-                {"101", "البرمجة بلغة جافا", "25", "مقدمة في البرمجة بلغة جافا"},
-                {"102", "قواعد البيانات", "20", "تصميم وإدارة قواعد البيانات"},
-                {"103", "هندسة البرمجيات", "15", "مبادئ تطوير البرمجيات"}
-        };
+
 
         JTable courseTable = new JTable();
         courseTable.setDefaultEditor(Object.class, null);
