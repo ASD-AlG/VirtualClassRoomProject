@@ -1,5 +1,8 @@
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+
 import javax.swing.*;
 
 /**
@@ -60,6 +63,73 @@ public class TeacherDashboard extends JFrame {
         buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         JButton addCourseButton = new JButton("إضافة دورة جديدة");
+        addCourseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Create a new dialog for adding a course
+                JDialog addCourseDialog = new JDialog(TeacherDashboard.this, "Add New Course", true);
+                addCourseDialog.setSize(400, 300);
+                addCourseDialog.setLocationRelativeTo(TeacherDashboard.this);
+                
+                JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+                formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                
+                formPanel.add(new JLabel("Course Name:"));
+                JTextField courseNameField = new JTextField();
+                formPanel.add(courseNameField);
+                
+                formPanel.add(new JLabel("Credit Hours:"));
+                JSpinner creditHoursSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 6, 1));
+                formPanel.add(creditHoursSpinner);
+                
+                formPanel.add(new JLabel("Enrollment Date (MM/dd/yyyy):"));
+                JTextField enrollmentDateField = new JTextField(new SimpleDateFormat("MM/dd/yyyy").format(new java.util.Date()));
+                formPanel.add(enrollmentDateField);
+                
+                JButton submitButton = new JButton("Add Course");
+                submitButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String courseName = courseNameField.getText().trim();
+                        int creditHours = (Integer) creditHoursSpinner.getValue();
+                        String enrollmentDate = enrollmentDateField.getText().trim();
+                        
+                        if (courseName.isEmpty()) {
+                            JOptionPane.showMessageDialog(addCourseDialog, "Please enter a course name!");
+                            return;
+                        }
+                        
+                        if (dbManager.addCourse(courseName, enrollmentDate, creditHours)) {
+                            JOptionPane.showMessageDialog(addCourseDialog, "Course added successfully!");
+                            // Refresh the course table
+                            JTable courseTable = (JTable) ((JScrollPane) panel.getComponent(1)).getViewport().getView();
+                            courseTable.setModel(dbManager.getCoursesTable());
+                            addCourseDialog.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(addCourseDialog, "Failed to add course!");
+                        }
+                    }
+                });
+                
+                JButton cancelButton = new JButton("Cancel");
+                cancelButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        addCourseDialog.dispose();
+                    }
+                });
+                
+                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                buttonPanel.add(submitButton);
+                buttonPanel.add(cancelButton);
+                
+                addCourseDialog.setLayout(new BorderLayout());
+                addCourseDialog.add(formPanel, BorderLayout.CENTER);
+                addCourseDialog.add(buttonPanel, BorderLayout.SOUTH);
+                
+                addCourseDialog.setVisible(true);
+            }
+        });
         JButton manageCourseButton = new JButton("إدارة الدورة المحددة");
 
         buttonPanel.add(addCourseButton);
