@@ -48,7 +48,8 @@ public class DatabaseManager {
           + " assignment_id INT PRIMARY KEY AUTO_INCREMENT,"
           + " course VARCHAR(100) NOT NULL,"
           + " submissionDate DATE NOT NULL,"
-            + " End_date DATE NOT NULL"
+          + " End_date DATE NOT NULL,"
+          + " question TEXT NOT NULL"
         + ")";
 
         final String announcmentTable =
@@ -65,7 +66,7 @@ public class DatabaseManager {
           + " course_id INT PRIMARY KEY AUTO_INCREMENT,"
           + " course_name VARCHAR(100) NOT NULL,"
           + " enrollmentDate DATE NOT NULL,"
-            + " credit_hour INT NOT NULL"
+          + " credit_hour INT NOT NULL"
         + ")";
 
 
@@ -74,7 +75,7 @@ public class DatabaseManager {
         + " course_id INT PRIMARY KEY AUTO_INCREMENT,"
         + " course_name VARCHAR(100) NOT NULL,"
         + " grade INT NOT NULL,"
-          + " Note VARCHAR(100) NOT NULL"
+        + " Note VARCHAR(100) NOT NULL"
       + ")";
 
         try (Statement st = connection.createStatement()) {
@@ -110,48 +111,41 @@ public class DatabaseManager {
     }
 
     public boolean insertAssignment(String course, String submissionDate,
-    String End_date,String question) {
-if (connection == null) return false;
+        String endDate, String question) {
+        if (connection == null) return false;
 
-final String sql = "INSERT INTO Assignment(course,submissionDate,End_date,question)"
-+ " VALUES(?,?,?,?)";
+        final String sql = "INSERT INTO Assignment(course,submissionDate,End_date,question)"
+                         + " VALUES(?,?,?,?)";
 
-
-
-
-try (PreparedStatement pst = connection.prepareStatement(sql)) {
-
-SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy ");
-try {
-java.util.Date dt = sdf.parse(submissionDate);
-java.sql.Date submissionDate1 = new java.sql.Date(dt.getTime());
-
-SimpleDateFormat sdf1 = new SimpleDateFormat("dd/mm/yyyy ");
-java.util.Date dt1 = sdf1.parse(End_date);
-java.sql.Date End_date1 = new java.sql.Date(dt.getTime());
-pst.setString(1, course);
-pst.setDate(2, submissionDate1);
-pst.setDate(3, End_date1);
-pst.setString(4, question);
-pst.executeUpdate();
-
-} catch (Exception e) {
-System.err.println("Parse Exception Thrown");
-e.printStackTrace();
-}
-
-
-
-
-
-return true;
-} catch (SQLIntegrityConstraintViolationException dup) {
-return false;                 // duplicate email
-} catch (SQLException ex) {
-ex.printStackTrace();
-return false;
-}
-}
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            // Parse dates with proper format
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            
+            try {
+                java.util.Date submissionDateUtil = sdf.parse(submissionDate);
+                java.sql.Date submissionDateSql = new java.sql.Date(submissionDateUtil.getTime());
+                
+                java.util.Date endDateUtil = sdf.parse(endDate);
+                java.sql.Date endDateSql = new java.sql.Date(endDateUtil.getTime());
+                
+                pst.setString(1, course);
+                pst.setDate(2, submissionDateSql);
+                pst.setDate(3, endDateSql);
+                pst.setString(4, question);
+                
+                pst.executeUpdate();
+                return true;
+                
+            } catch (Exception e) {
+                System.err.println("Date parsing error: " + e.getMessage());
+                e.printStackTrace();
+                return false;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 
     public boolean validateLogin(String email, String password, String role) {
        
@@ -201,8 +195,6 @@ return false;
             return 0;
         }
     }
-
-
 
     public int get_tch_num(){
         int count=0;

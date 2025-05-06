@@ -15,7 +15,7 @@ public class TeacherDashboard extends JFrame {
 
     private JTabbedPane tabbedPane;
 
-    public TeacherDashboard(String username,String email, DatabaseManager dbManager) {
+    public TeacherDashboard(String username, String email, DatabaseManager dbManager) {
         this.username = username;
         this.email = email;
         this.dbManager = dbManager;
@@ -49,8 +49,6 @@ public class TeacherDashboard extends JFrame {
         JLabel titleLabel = new JLabel("الدورات الخاصة بك", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
-
-
 
         JTable courseTable = new JTable();
         courseTable.setDefaultEditor(Object.class, null);
@@ -142,17 +140,7 @@ public class TeacherDashboard extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        // عنوان
-
-
-        // قائمة الواجبات (بيانات وهمية للعرض)
-        String[] columnNames = {"رقم الواجب", "الدورة", "العنوان", "الموعد النهائي", "عدد التسليمات"};
-        Object[][] data = {
-                {"201", "البرمجة بلغة جافا", "واجب #1: برمجة آلة حاسبة", "2023-12-15", "20/25"},
-                {"202", "قواعد البيانات", "واجب #1: تصميم قاعدة بيانات", "2023-12-20", "15/20"},
-                {"203", "هندسة البرمجيات", "واجب #1: متطلبات المشروع", "2023-12-25", "5/15"}
-        };
-
+        // Create assignments table and populate it with data from the database
         JTable asstable = new JTable();
         asstable.setDefaultEditor(Object.class, null);
         asstable.setModel(dbManager.getAssignmentTable());
@@ -163,11 +151,118 @@ public class TeacherDashboard extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-        JButton addAssignmentButton = new JButton("Add Assignment");
+        JButton addAssignmentButton = new JButton("");
+        addAssignmentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Create a new dialog for adding an assignment
+                JDialog addAssignmentDialog = new JDialog(TeacherDashboard.this, "Add New Assignment", true);
+                addAssignmentDialog.setSize(500, 350);
+                addAssignmentDialog.setLocationRelativeTo(TeacherDashboard.this);
+                
+                // Use GridBagLayout for more flexible layout
+                JPanel formPanel = new JPanel(new GridBagLayout());
+                formPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                gbc.insets = new Insets(5, 5, 5, 5);
+                
+                // Course field
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                formPanel.add(new JLabel("Course:"), gbc);
+                
+                gbc.gridx = 1;
+                gbc.gridy = 0;
+                gbc.weightx = 1.0;
+                JTextField courseField = new JTextField(20);
+                formPanel.add(courseField, gbc);
+                
+                // Assignment description/question field
+                gbc.gridx = 0;
+                gbc.gridy = 1;
+                gbc.weightx = 0.0;
+                formPanel.add(new JLabel("Assignment Description:"), gbc);
+                
+                gbc.gridx = 0;
+                gbc.gridy = 2;
+                gbc.gridwidth = 2;
+                gbc.weighty = 1.0;
+                gbc.fill = GridBagConstraints.BOTH;
+                JTextArea questionArea = new JTextArea(5, 30);
+                questionArea.setLineWrap(true);
+                questionArea.setWrapStyleWord(true);
+                JScrollPane questionScrollPane = new JScrollPane(questionArea);
+                formPanel.add(questionScrollPane, gbc);
+                
+                // Submit button
+                JButton submitButton = new JButton("Add Assignment");
+                submitButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String course = courseField.getText().trim();
+                        String question = questionArea.getText().trim();
+                        
+                        // Input validation
+                        if (course.isEmpty()) {
+                            JOptionPane.showMessageDialog(addAssignmentDialog, 
+                                "Please enter a course name!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        if (question.isEmpty()) {
+                            JOptionPane.showMessageDialog(addAssignmentDialog, 
+                                "Please enter an assignment description!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Current date for submission date
+                        String currentDate = new SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date());
+                        
+                        // End date is 7 days from now
+                        java.util.Calendar cal = java.util.Calendar.getInstance();
+                        cal.add(java.util.Calendar.DATE, 7);
+                        String endDate = new SimpleDateFormat("dd/MM/yyyy").format(cal.getTime());
+                        
+                        // Save to database
+                        if (dbManager.insertAssignment(course, currentDate, endDate, question)) {
+                            JOptionPane.showMessageDialog(addAssignmentDialog, 
+                                "Assignment added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            
+                            // Refresh the assignment table
+                            asstable.setModel(dbManager.getAssignmentTable());
+                            addAssignmentDialog.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(addAssignmentDialog, 
+                                "Failed to add assignment!", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                });
+                
+                // Cancel button
+                JButton cancelButton = new JButton("Cancel");
+                cancelButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        addAssignmentDialog.dispose();
+                    }
+                });
+                
+                // Button panel
+                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                buttonPanel.add(submitButton);
+                buttonPanel.add(cancelButton);
+                
+                // Assemble the dialog
+                addAssignmentDialog.setLayout(new BorderLayout());
+                addAssignmentDialog.add(formPanel, BorderLayout.CENTER);
+                addAssignmentDialog.add(buttonPanel, BorderLayout.SOUTH);
+                
+                addAssignmentDialog.setVisible(true);
+            }
+        });
 
         buttonPanel.add(addAssignmentButton);
-
-
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
         return panel;
