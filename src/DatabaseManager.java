@@ -51,6 +51,14 @@ public class DatabaseManager {
             + " End_date DATE NOT NULL"
         + ")";
 
+        final String announcmentTable =
+          "CREATE TABLE IF NOT EXISTS Announcment ("
+          + " announcment_id INT PRIMARY KEY AUTO_INCREMENT,"
+          + " course VARCHAR(100) NOT NULL,"
+          +" title VARCHAR(100) NOT NULL,"
+          +" Massage VARCHAR(1000) NOT NULL,"
+        + ")";
+
 
         final String CourseTable =
           "CREATE TABLE IF NOT EXISTS courses ("
