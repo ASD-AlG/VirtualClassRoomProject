@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 
@@ -72,10 +73,7 @@ public class AdminDashboard extends JFrame {
 
         panel.add(searchPanel, BorderLayout.NORTH);
 
-        // قائمة المستخدمين (بيانات وهمية للعرض)
-        
-
-
+        // قائمة المستخدمين
         JTable userTable = new JTable();
         userTable.setDefaultEditor(Object.class, null);
         userTable.setModel(dbManager.getUsersTable());
@@ -86,7 +84,7 @@ public class AdminDashboard extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-JButton addUserButton = new JButton("Add User");
+        JButton addUserButton = new JButton("Add User");
         addUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,14 +93,39 @@ JButton addUserButton = new JButton("Add User");
             }
         });
 
-
         JButton deleteUserButton = new JButton("Delete User");
+        deleteUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = userTable.getSelectedRow();
+                if (selectedRow >= 0) {
+                    int userId = Integer.parseInt(userTable.getValueAt(selectedRow, 0).toString());
+                    String userName = userTable.getValueAt(selectedRow, 1).toString();
+                    
+                    int confirm = JOptionPane.showConfirmDialog(
+                        null, 
+                        "Are you sure you want to delete user: " + userName + "?", 
+                        "Confirm Deletion", 
+                        JOptionPane.YES_NO_OPTION
+                    );
+                    
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        if (dbManager.deleteUser(userId)) {
+                            // Refresh the table
+                            userTable.setModel(dbManager.getUsersTable());
+                            JOptionPane.showMessageDialog(null, "User deleted successfully!");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Failed to delete user!");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select a user to delete!");
+                }
+            }
+        });
 
         buttonPanel.add(addUserButton);
         buttonPanel.add(deleteUserButton);
-
-
-
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
             
@@ -118,7 +141,6 @@ JButton addUserButton = new JButton("Add User");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
-
         JTable courseTable = new JTable();
         courseTable.setDefaultEditor(Object.class, null);
         courseTable.setModel(dbManager.getCoursesTable());
@@ -130,7 +152,103 @@ JButton addUserButton = new JButton("Add User");
         buttonPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         JButton addCourseButton = new JButton("Add Course");
+        addCourseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Create a new dialog for adding a course
+                JDialog addCourseDialog = new JDialog(AdminDashboard.this, "Add New Course", true);
+                addCourseDialog.setSize(400, 300);
+                addCourseDialog.setLocationRelativeTo(AdminDashboard.this);
+                
+                JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+                formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                
+                formPanel.add(new JLabel("Course Name:"));
+                JTextField courseNameField = new JTextField();
+                formPanel.add(courseNameField);
+                
+                formPanel.add(new JLabel("Credit Hours:"));
+                JSpinner creditHoursSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 6, 1));
+                formPanel.add(creditHoursSpinner);
+                
+                formPanel.add(new JLabel("Enrollment Date (MM/dd/yyyy):"));
+                JTextField enrollmentDateField = new JTextField(new SimpleDateFormat("MM/dd/yyyy").format(new java.util.Date()));
+                formPanel.add(enrollmentDateField);
+                
+                JButton submitButton = new JButton("Add Course");
+                submitButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String courseName = courseNameField.getText().trim();
+                        int creditHours = (Integer) creditHoursSpinner.getValue();
+                        String enrollmentDate = enrollmentDateField.getText().trim();
+                        
+                        if (courseName.isEmpty()) {
+                            JOptionPane.showMessageDialog(addCourseDialog, "Please enter a course name!");
+                            return;
+                        }
+                        
+                        if (dbManager.addCourse(courseName, enrollmentDate, creditHours)) {
+                            JOptionPane.showMessageDialog(addCourseDialog, "Course added successfully!");
+                            // Refresh the course table
+                            courseTable.setModel(dbManager.getCoursesTable());
+                            addCourseDialog.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(addCourseDialog, "Failed to add course!");
+                        }
+                    }
+                });
+                
+                JButton cancelButton = new JButton("Cancel");
+                cancelButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        addCourseDialog.dispose();
+                    }
+                });
+                
+                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                buttonPanel.add(submitButton);
+                buttonPanel.add(cancelButton);
+                
+                addCourseDialog.setLayout(new BorderLayout());
+                addCourseDialog.add(formPanel, BorderLayout.CENTER);
+                addCourseDialog.add(buttonPanel, BorderLayout.SOUTH);
+                
+                addCourseDialog.setVisible(true);
+            }
+        });
+
         JButton deleteCourseButton = new JButton("Delete Course");
+        deleteCourseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = courseTable.getSelectedRow();
+                if (selectedRow >= 0) {
+                    int courseId = Integer.parseInt(courseTable.getValueAt(selectedRow, 0).toString());
+                    String courseName = courseTable.getValueAt(selectedRow, 1).toString();
+                    
+                    int confirm = JOptionPane.showConfirmDialog(
+                        null, 
+                        "Are you sure you want to delete course: " + courseName + "?", 
+                        "Confirm Deletion", 
+                        JOptionPane.YES_NO_OPTION
+                    );
+                    
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        if (dbManager.deleteCourse(courseId)) {
+                            // Refresh the table
+                            courseTable.setModel(dbManager.getCoursesTable());
+                            JOptionPane.showMessageDialog(null, "Course deleted successfully!");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Failed to delete course!");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select a course to delete!");
+                }
+            }
+        });
 
         buttonPanel.add(addCourseButton);
         buttonPanel.add(deleteCourseButton);
@@ -156,12 +274,14 @@ JButton addUserButton = new JButton("Add User");
 
         // بطاقات الإحصائيات
         int num=dbManager.get_std_num();
+        int coursenum = dbManager.get_course_num();
+        String coursenumString = coursenum + "";
         String std = String.valueOf(num);
         num=dbManager.get_tch_num();
         String tch = String.valueOf(num);
         addStatCard(statsPanel, "إجمالي الطلاب", std);
         addStatCard(statsPanel, "إجمالي المعلمين", tch);
-        addStatCard(statsPanel, "إجمالي الدورات", "15");
+        addStatCard(statsPanel, "Number of courses",coursenumString);
         addStatCard(statsPanel, "الواجبات النشطة", "25");
         addStatCard(statsPanel, "تسليمات هذا الأسبوع", "120");
 
@@ -231,7 +351,7 @@ JButton addUserButton = new JButton("Add User");
         return panel;
     }
     
-    // Added method to export users to a text file
+    // Method to export users to a text file
     private void exportUsersToFile() {
         try {
             // Get all users from database

@@ -102,44 +102,48 @@ public class DatabaseManager {
     }
 
     public boolean insertAssignmen(String course, String submissionDate,
-                                String End_date) {
-        if (connection == null) return false;
+    String End_date,String question) {
+if (connection == null) return false;
 
-        final String sql = "INSERT INTO Assignment(course,submissionDate,End_date)"
-                         + " VALUES(?,?,?)";
-                    
-                         
-        
+final String sql = "INSERT INTO Assignment(course,submissionDate,End_date,question)"
++ " VALUES(?,?,?,?)";
 
-        try (PreparedStatement pst = connection.prepareStatement(sql)) {
 
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-            try {
-                java.util.Date dt = sdf.parse(submissionDate);//add catch bc i suck
-                java.sql.Date submissionDate1 = new java.sql.Date(dt.getTime());
-                
-                SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-                java.util.Date dt1 = sdf1.parse(End_date);//add catch bc i suck
-                java.sql.Date End_date1 = new java.sql.Date(dt.getTime());
-                
-            } catch (Exception e) {
-                System.err.println("Parse Exception Thrown");
-                e.printStackTrace();
-            }
-            
-            pst.setString(1, course);
-            pst.setDate(2, submissionDate1);
-            pst.setDate(3, End_date1);
-           
-            pst.executeUpdate();
-            return true;
-        } catch (SQLIntegrityConstraintViolationException dup) {
-            return false;                 // duplicate email
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-    }
+
+
+try (PreparedStatement pst = connection.prepareStatement(sql)) {
+
+SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy ");
+try {
+java.util.Date dt = sdf.parse(submissionDate);
+java.sql.Date submissionDate1 = new java.sql.Date(dt.getTime());
+
+SimpleDateFormat sdf1 = new SimpleDateFormat("dd/mm/yyyy ");
+java.util.Date dt1 = sdf1.parse(End_date);
+java.sql.Date End_date1 = new java.sql.Date(dt.getTime());
+pst.setString(1, course);
+pst.setDate(2, submissionDate1);
+pst.setDate(3, End_date1);
+pst.setString(4, question);
+pst.executeUpdate();
+
+} catch (Exception e) {
+System.err.println("Parse Exception Thrown");
+e.printStackTrace();
+}
+
+
+
+
+
+return true;
+} catch (SQLIntegrityConstraintViolationException dup) {
+return false;                 // duplicate email
+} catch (SQLException ex) {
+ex.printStackTrace();
+return false;
+}
+}
 
     public boolean validateLogin(String email, String password, String role) {
        
@@ -159,6 +163,7 @@ public class DatabaseManager {
             return false;
         }
     }
+    
     public int get_std_num(){
         int count=0;
         
@@ -168,15 +173,29 @@ public class DatabaseManager {
             rs.next();
             count = rs.getInt(1);
             return count;
-        
-        
-
         }catch (SQLException ex) {
             ex.printStackTrace();
             return 0;
         }
-
     }
+    
+    public int get_course_num(){
+        int count=0;
+        
+        final String sql =
+            "SELECT count(course_id) from courses";
+        try (Statement stmt = connection.createStatement();ResultSet rs = stmt.executeQuery(sql);) {
+            rs.next();
+            count = rs.getInt(1);
+            return count;
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+
+
     public int get_tch_num(){
         int count=0;
         
@@ -186,14 +205,10 @@ public class DatabaseManager {
             rs.next();
             count = rs.getInt(1);
             return count;
-        
-        
-
         }catch (SQLException ex) {
             ex.printStackTrace();
             return 0;
         }
-
     }
 
     public TableModel getAssignmentTable()
@@ -267,7 +282,6 @@ public class DatabaseManager {
         }
     }
     
-
     public int getUserId(String email) {
         if (connection == null) return -1;
 
@@ -294,6 +308,65 @@ public class DatabaseManager {
         } catch (SQLException ex) {
             ex.printStackTrace();
             return null;
+        }
+    }
+    
+    // Method to delete a user
+    public boolean deleteUser(int userId) {
+        if (connection == null) return false;
+        
+        final String sql = "DELETE FROM Users WHERE user_id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setInt(1, userId);
+            int rowsAffected = pst.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    // Method to add a new course
+    public boolean addCourse(String courseName, String enrollmentDate, int creditHours) {
+        if (connection == null) return false;
+        
+        final String sql = "INSERT INTO courses (course_name, enrollmentDate, credit_hour) VALUES (?, ?, ?)";
+        
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                java.util.Date date = sdf.parse(enrollmentDate);
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                
+                pst.setString(1, courseName);
+                pst.setDate(2, sqlDate);
+                pst.setInt(3, creditHours);
+                
+                int rowsAffected = pst.executeUpdate();
+                return rowsAffected > 0;
+            } catch (Exception e) {
+                System.err.println("Date Parse Exception: " + e.getMessage());
+                e.printStackTrace();
+                return false;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    // Method to delete a course
+    public boolean deleteCourse(int courseId) {
+        if (connection == null) return false;
+        
+        final String sql = "DELETE FROM courses WHERE course_id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setInt(1, courseId);
+            int rowsAffected = pst.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
         }
     }
 
