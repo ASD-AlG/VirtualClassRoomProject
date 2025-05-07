@@ -114,7 +114,7 @@ public class DatabaseManager {
         String endDate, String question) {
         if (connection == null) return false;
 
-        final String sql = "INSERT INTO Assignment(course,submissionDate,End_date,question)"
+        final String sql = "INSERT INTO Assignment(course,submissionDate,End_date,massage)"
                          + " VALUES(?,?,?,?)";
 
         try (PreparedStatement pst = connection.prepareStatement(sql)) {

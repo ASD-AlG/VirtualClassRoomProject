@@ -30,7 +30,7 @@ public class StudentDashboard extends JFrame {
 
         // إضافة علامات التبويب
         tabbedPane.addTab("Enrolled Courses ", createCoursesPanel());
-        tabbedPane.addTab("Assignments", createAssignmentsPanel());
+        tabbedPane.addTab("Announcement", createAssignmentsPanel());
         tabbedPane.addTab("Grades", createGradesPanel());
         tabbedPane.addTab("Personal Profile", createProfilePanel());
 
@@ -63,7 +63,7 @@ public class StudentDashboard extends JFrame {
         panel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         // عنوان
-        JLabel titleLabel = new JLabel("Assignments", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Announcement", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
@@ -75,7 +75,7 @@ public class StudentDashboard extends JFrame {
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // زر لتسليم واجب
-        JButton submitAssignmentButton = new JButton("تسليم واجب");
+        JButton submitAssignmentButton = new JButton("Submet Assignment");
         panel.add(submitAssignmentButton, BorderLayout.SOUTH);
 
         return panel;

@@ -227,14 +227,14 @@ public class TeacherDashboard extends JFrame {
                         // Save to database
                         if (dbManager.insertAssignment(course, currentDate, endDate, question)) {
                             JOptionPane.showMessageDialog(addAssignmentDialog, 
-                                "Assignment added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                                "Announcment added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                             
                             // Refresh the assignment table
                             asstable.setModel(dbManager.getAssignmentTable());
                             addAssignmentDialog.dispose();
                         } else {
                             JOptionPane.showMessageDialog(addAssignmentDialog, 
-                                "Failed to add assignment!", "Error", JOptionPane.ERROR_MESSAGE);
+                                "Failed to add announcment!", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 });
